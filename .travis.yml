@@ -1,0 +1,14 @@
+sudo: required
+env:
+  matrix:
+  - DOCKER_REGISTRY=quay.io DEIS_REGISTRY=${DOCKER_REGISTRY}/ IMAGE_PREFIX=tfgco
+  global:
+  - secure: ISPH23zfWZXsFpOXTwk0hwG5DLuIWCb/7ZS9ozFWytNdlM3doPwXgqvzCSkMiFyn4nKngnNGdttoXCc9JdsaytVylZ9vnT2wYjL6niqbWX6vRYkLGFj6FRyYuO38x4TMPnIKsOus4CtiuESBtYFIo4DC1r8+nueam2zXQ0Kf9vrqeswuPQJ89jErirISU9yAlZxANd4VEa4gQZq85TWnU8D75j+EtvsNkIOl3BIVSuTIu6ZLPT0uyrCWBTxoZU2UF6F+dNlMBfwHXl5F5bY+HcxZMtnLY4d9v0LYP2LaI464TnC6e71Y6+66Tp9wqUq0xloxxaOe9JQShvAsLYRcSD1gwNqA7sVmU5+g8miNmCYIAOH5qKeAEGiHzwFc5k/VfIsIDDWMHLx8N1iQ1WNCpBShJPn3aI1L0cKTdVZJrZqO8HeNSN5Xi3BcEOUoBxE/R2Uo76YDa2b0yy8C1NSA1d0pCPhSw11UStPiuqjW2jXfOwQG0uksP334o8Za3n6iIseYThmsMRg9H0UC/7X9OaTqFdXHoQAAf3CK+2QrpI9bir0scsZivQ9WyN6hx9j43iydkAbE3jrsrv/ytilRwOsS32ix/bW/WgZOCuehCzwc6LNwRciKEJXifhMYnMsWhQbsWTNAPM04hd9VmfCtnmAMDMgFEcRGuahl4m2Z6nY=
+services:
+- docker
+script:
+- make bootstrap
+- make docker-build test-style test-unit
+after_success:
+- docker login -u $DOCKER_USER -p $DOCKER_PASSWORD $DOCKER_REGISTRY
+- make docker-push

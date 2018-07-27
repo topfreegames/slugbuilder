@@ -101,8 +101,8 @@ export STACK=cedar-14
 
 ## copy the environment dir excluding the ephemeral ..data/ dir and other symlinks created by Kubernetes.
 
-if [ "$(ls -A $secret_dir)" ]; then
-   cp $secret_dir/* $env_root/
+if [ "$(ls -A $secret_dir/..data)" ]; then
+   cp -r $secret_dir/..data/. $env_root/
 fi
 
 ## SSH key configuration
